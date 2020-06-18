@@ -7,7 +7,7 @@ https://www.kaggle.com/c/liverpool-ion-switching/overview
 The challenge is based on [this paper](https://www.nature.com/articles/s42003-019-0729-3) in which fake patch clamp data was used to train a deep learning model that was then successful at classifying real-world data (hand-labeled by electrophysiologists).
 
 ## What is Patch Clamp Electrophysiology?
-![Patch Clamp](https://upload.wikimedia.org/wikipedia/en/7/7a/Cell-Attached_Patch_Clamp.png)
+![Patch Clamp](https://upload.wikimedia.org/wikipedia/en/7/7a/Cell-Attached_Patch_Clamp.png)  
 A patch pipette is attached to the cell membrane, and the electrical activty of that patch of the membrane is recorded. The membrane contains pores (ion channels) that can be open or closed. When they are open, they allow the passage of ions, and that movement of charge can be recorded as a current.
 
 Image credit: https://en.wikipedia.org/wiki/Patch_clamp
