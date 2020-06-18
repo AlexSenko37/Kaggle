@@ -472,7 +472,7 @@ f1
 
 
 
-    0.9299784
+    0.9298072
 
 
 
@@ -513,27 +513,18 @@ plt.ylabel('open channels');
 
 
 ```python
-# generate predictions
 predictions = rf.predict(x_test)
+cf = confusion_matrix(y_test, predictions)
 
-#generate confusion matrix and normalize by rows (actual labels)
 con_mat = metrics.confusion_matrix(y_test, predictions)
-row_sums = con_mat.sum(axis=1)
-norm_mat = con_mat / row_sums[:, np.newaxis]
-# set threshold for zero
-a = np.ones((11,11)) * 0.001
-norm_mat2 = norm_mat >= a
-norm_mat3 = norm_mat2 * norm_mat
-norm_mat3
-
-# plot
 sns.set(font_scale = 1)
 plt.figure(figsize=(10,10))
-ax = sns.heatmap(norm_mat3, annot=True, fmt=".2g", linewidths=.5, square = True, cmap = 'Blues_r');
+ax = sns.heatmap(con_mat, annot=True, fmt=".0f", linewidths=.5, square = True, cmap = 'Blues_r');
 plt.ylabel('Actual label');
 plt.xlabel('Predicted label');
 all_sample_title = 'F1 Score: {0:.5f}'.format(f1)
 plt.title(all_sample_title, size = 20);
+#ax = sns.heatmap(df_corr, annot=True) #notation: "annot" not "annote"
 bottom, top = ax.get_ylim()
 ax.set_ylim(bottom + 0.5, top - 0.5);
 ```
@@ -756,35 +747,6 @@ df_test_drop.to_csv('submission2.csv', index = False, float_format = '%.4f')
 ```
 
 ## Kaggle F1 Score: 0.883
+The next steps to improve this model that I would implement would be a penalty for having for large discrepancies between adjacent predictions (to penalize predictions that go from 8 -> 3, for example). Also the random forest could be trained with more estimators/ the other hyperparameters could be optimized to prevent overfitting on the training data.
 
-Next steps to improve this model:
-
-- Implement a penalty for having for large discrepancies between adjacent predictions (to penalize predictions that go from 8 -> 3, for example)
-- Hyperparameter optimization
-- Should also consider feature selection based on how they contribute to the model:
-
-
-```python
-ft_import = rf.feature_importances_
-```
-
-
-```python
-# make a dataframe of the feature importances and labels
-df_feat_plot = pd.DataFrame({'Importance': ft_import, 'Label': ['signal','3_avg','10_avg','50_avg','100_avg','1000_avg','5_var','10_var','100_var','1000_var']})
-
-# Initialize the matplotlib figure
-f, ax = plt.subplots(figsize=(6, 6))
-
-# Plot the total crashes
-sns.set_color_codes("pastel")
-sns.barplot(x="Importance", y="Label", data=df_feat_plot, color="b")
-
-# Add a legend and informative axis label
-ax.set(xlim=(0, 0.3), ylabel="", xlabel="Relative feature importance")
-sns.despine(left=True, bottom=True)
-```
-
-
-![png](output_36_0.png)
-
+A separate approach would be to try classification with a k-nearest neighbors model.
